@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import api from '../../api/axios'
-import { Users, Plus, X } from 'lucide-react'
+import { Users, Plus, X, Search } from 'lucide-react'
 
 interface Patient {
   id: number
   username: string
   email: string
+  first_name: string
+  last_name: string
   date_of_birth: string
   blood_type: string
   allergies: string
@@ -16,16 +18,18 @@ interface Patient {
   created_at: string
 }
 
-
 const Patients = () => {
   const [patients, setPatients] = useState<Patient[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     username: '',
     email: '',
     password: '',
+    first_name: '',
+    last_name: '',
     date_of_birth: '',
     blood_type: '',
     allergies: '',
@@ -36,9 +40,10 @@ const Patients = () => {
 
   const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
 
-  const fetchPatients = async () => {
+  const fetchPatients = async (searchTerm = '') => {
     try {
-      const response = await api.get('/patients/')
+      const url = searchTerm ? `/patients/?search=${searchTerm}` : '/patients/'
+      const response = await api.get(url)
       setPatients(response.data)
     } catch (err) {
       console.error(err)
@@ -51,6 +56,13 @@ const Patients = () => {
     fetchPatients()
   }, [])
 
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchPatients(search)
+    }, 400)
+    return () => clearTimeout(delay)
+  }, [search])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -58,9 +70,9 @@ const Patients = () => {
       await api.post('/patients/', form)
       setShowForm(false)
       setForm({
-        username: '', email: '', password: '', date_of_birth: '',
-        blood_type: '', allergies: '', emergency_contact_name: '',
-        emergency_contact_phone: '', medical_history: '',
+        username: '', email: '', password: '', first_name: '', last_name: '',
+        date_of_birth: '', blood_type: '', allergies: '',
+        emergency_contact_name: '', emergency_contact_phone: '', medical_history: '',
       })
       fetchPatients()
     } catch (err: any) {
@@ -84,6 +96,19 @@ const Patients = () => {
         </button>
       </div>
 
+      {/* Search Bar */}
+      <div className="relative mb-5">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search by name or email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm text-white outline-none"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+        />
+      </div>
+
       {loading ? (
         <div className="text-gray-500 text-sm">Loading...</div>
       ) : (
@@ -99,7 +124,7 @@ const Patients = () => {
             <tbody>
               {patients.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-8 text-center text-gray-600 text-sm">No patients yet</td>
+                  <td colSpan={5} className="px-5 py-8 text-center text-gray-600 text-sm">No patients found</td>
                 </tr>
               ) : (
                 patients.map((patient, i) => (
@@ -107,9 +132,16 @@ const Patients = () => {
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #38bdf8, #6366f1)' }}>
-                          {patient.username[0].toUpperCase()}
+                          {(patient.first_name || patient.username)[0].toUpperCase()}
                         </div>
-                        <span className="text-white text-sm font-medium">{patient.username}</span>
+                        <div>
+                          <div className="text-white text-sm font-medium">
+                            {patient.first_name && patient.last_name
+                              ? `${patient.first_name} ${patient.last_name}`
+                              : patient.username}
+                          </div>
+                          <div className="text-gray-500 text-xs">{patient.username}</div>
+                        </div>
                       </div>
                     </td>
                     <td className="px-5 py-4 text-gray-400 text-sm">{patient.email}</td>
@@ -130,7 +162,7 @@ const Patients = () => {
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <div className="w-full max-w-lg rounded-2xl p-6 relative" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="w-full max-w-lg rounded-2xl p-6 relative max-h-screen overflow-y-auto" style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(56,189,248,0.1)' }}>
@@ -152,6 +184,8 @@ const Patients = () => {
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 {[
+                  { label: 'First Name', key: 'first_name', type: 'text' },
+                  { label: 'Last Name', key: 'last_name', type: 'text' },
                   { label: 'Username', key: 'username', type: 'text' },
                   { label: 'Email', key: 'email', type: 'email' },
                   { label: 'Password', key: 'password', type: 'password' },

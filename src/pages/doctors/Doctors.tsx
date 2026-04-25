@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import api from '../../api/axios'
-import { Stethoscope, Plus, X } from 'lucide-react'
+import { Stethoscope, Plus, X, Search } from 'lucide-react'
 
 interface Doctor {
   id: number
@@ -26,6 +26,7 @@ const Doctors = () => {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -36,9 +37,10 @@ const Doctors = () => {
     available_days: [] as string[],
   })
 
-  const fetchDoctors = async () => {
+  const fetchDoctors = async (searchTerm = '') => {
     try {
-      const response = await api.get('/doctors/')
+      const url = searchTerm ? `/doctors/?search=${searchTerm}` : '/doctors/'
+      const response = await api.get(url)
       setDoctors(response.data)
     } catch (err) {
       console.error(err)
@@ -50,6 +52,13 @@ const Doctors = () => {
   useEffect(() => {
     fetchDoctors()
   }, [])
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchDoctors(search)
+    }, 400)
+    return () => clearTimeout(delay)
+  }, [search])
 
   const toggleDay = (day: string) => {
     setForm(prev => ({
@@ -92,6 +101,19 @@ const Doctors = () => {
         </button>
       </div>
 
+      {/* Search Bar */}
+      <div className="relative mb-5">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search by name, specialisation or email..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm text-white outline-none"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+        />
+      </div>
+
       {loading ? (
         <div className="text-gray-500 text-sm">Loading...</div>
       ) : (
@@ -107,7 +129,7 @@ const Doctors = () => {
             <tbody>
               {doctors.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-5 py-8 text-center text-gray-600 text-sm">No doctors yet</td>
+                  <td colSpan={5} className="px-5 py-8 text-center text-gray-600 text-sm">No doctors found</td>
                 </tr>
               ) : (
                 doctors.map((doctor, i) => (
