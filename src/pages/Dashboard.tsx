@@ -1,36 +1,39 @@
-import { useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
-import { Activity, LogOut } from 'lucide-react'
+import Layout from '../components/Layout'
+import { Users, Stethoscope, Calendar, Activity } from 'lucide-react'
+
+const stats = [
+  { label: 'Total Patients', value: '0', icon: Users, color: '#38bdf8' },
+  { label: 'Total Doctors', value: '0', icon: Stethoscope, color: '#6366f1' },
+  { label: 'Appointments Today', value: '0', icon: Calendar, color: '#34d399' },
+  { label: 'System Status', value: 'Live', icon: Activity, color: '#f59e0b' },
+]
 
 const Dashboard = () => {
-  const { logout } = useAuth()
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: '#0d1117' }}>
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #38bdf8, #6366f1)' }}>
-            <Activity size={20} color="white" />
-          </div>
-          <span className="text-white font-bold text-2xl">HealthCore</span>
-        </div>
-        <h1 className="text-white text-3xl font-bold mb-2">Welcome to your Dashboard</h1>
-        <p className="text-gray-400 mb-8">You are successfully logged in.</p>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 mx-auto px-6 py-3 rounded-lg text-sm font-medium text-white transition"
-          style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.1)' }}
-        >
-          <LogOut size={16} /> Sign out
-        </button>
+    <Layout>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-white mb-1">Dashboard</h1>
+        <p className="text-gray-500 text-sm">Welcome to HealthCore Hospital Management System</p>
       </div>
-    </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map(({ label, value, icon: Icon, color }) => (
+          <div
+            key={label}
+            className="rounded-xl p-5"
+            style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.06)' }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-gray-400 text-sm">{label}</span>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${color}18` }}>
+                <Icon size={16} style={{ color }} />
+              </div>
+            </div>
+            <div className="text-2xl font-bold text-white">{value}</div>
+          </div>
+        ))}
+      </div>
+    </Layout>
   )
 }
 
