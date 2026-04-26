@@ -7,6 +7,7 @@ import Doctors from './pages/doctors/Doctors'
 import Appointments from './pages/appointments/Appointments'
 import Prescriptions from './pages/prescriptions/Prescriptions'
 import LabResults from './pages/lab_results/LabResults'
+import Billing from './pages/billing/Billing'
 import Layout from './components/Layout'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="appointments" element={<Appointments />} />
           <Route path="prescriptions" element={<Prescriptions />} />
           <Route path="lab-results" element={<LabResults />} />
+          <Route path="billing" element={<Billing />} />
         </Route>
       </Routes>
     </BrowserRouter>

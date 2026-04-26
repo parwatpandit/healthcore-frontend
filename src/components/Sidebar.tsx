@@ -7,6 +7,7 @@ import {
   CalendarCheck,
   Pill,
   FlaskConical,
+  FileText,
   LogOut,
 } from 'lucide-react'
 
@@ -17,6 +18,7 @@ const links = [
   { to: '/appointments', label: 'Appointments', icon: CalendarCheck },
   { to: '/prescriptions', label: 'Prescriptions', icon: Pill },
   { to: '/lab-results', label: 'Lab Results', icon: FlaskConical },
+  { to: '/billing', label: 'Billing', icon: FileText },
 ]
 
 export default function Sidebar() {
