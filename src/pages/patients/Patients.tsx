@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Layout from '../../components/Layout'
 import api from '../../api/axios'
 import { Users, Plus, X, Search } from 'lucide-react'
 
@@ -81,7 +80,7 @@ const Patients = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">Patients</h1>
@@ -96,7 +95,6 @@ const Patients = () => {
         </button>
       </div>
 
-      {/* Search Bar */}
       <div className="relative mb-5">
         <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
         <input
@@ -264,7 +262,7 @@ const Patients = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </div>
   )
 }
 

@@ -1,4 +1,3 @@
-import Layout from '../components/Layout'
 import { Users, Stethoscope, Calendar, Activity } from 'lucide-react'
 
 const stats = [
@@ -10,12 +9,11 @@ const stats = [
 
 const Dashboard = () => {
   return (
-    <Layout>
+    <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white mb-1">Dashboard</h1>
         <p className="text-gray-500 text-sm">Welcome to HealthCore Hospital Management System</p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map(({ label, value, icon: Icon, color }) => (
           <div
@@ -33,7 +31,7 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-    </Layout>
+    </div>
   )
 }
 

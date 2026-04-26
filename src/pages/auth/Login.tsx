@@ -20,7 +20,7 @@ const Login = () => {
     try {
       const response = await api.post('/login/', { username, password })
       login(response.data.access, response.data.refresh)
-      navigate('/dashboard')
+      navigate('/')
     } catch (err) {
       setError('Invalid username or password')
     } finally {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Layout from '../../components/Layout'
 import api from '../../api/axios'
 import { Calendar, Plus, X } from 'lucide-react'
 
@@ -93,7 +92,7 @@ const Appointments = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white mb-1">Appointments</h1>
@@ -278,7 +277,7 @@ const Appointments = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </div>
   )
 }
 
