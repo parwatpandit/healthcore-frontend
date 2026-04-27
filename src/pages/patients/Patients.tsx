@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import api from '../../api/axios'
 import { Users, Plus, X, Search } from 'lucide-react'
 
@@ -23,6 +24,7 @@ const Patients = () => {
   const [showForm, setShowForm] = useState(false)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -126,7 +128,16 @@ const Patients = () => {
                 </tr>
               ) : (
                 patients.map((patient, i) => (
-                  <tr key={patient.id} style={{ background: i % 2 === 0 ? '#0a0e17' : '#0d1117', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                  <tr
+                    key={patient.id}
+                    onClick={() => navigate(`/patients/${patient.id}`)}
+                    style={{
+                      background: i % 2 === 0 ? '#0a0e17' : '#0d1117',
+                      borderBottom: '1px solid rgba(255,255,255,0.04)',
+                      cursor: 'pointer'
+                    }}
+                    className="hover:bg-[#161b22] transition"
+                  >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #38bdf8, #6366f1)' }}>

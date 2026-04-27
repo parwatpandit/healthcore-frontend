@@ -9,6 +9,8 @@ import Prescriptions from './pages/prescriptions/Prescriptions'
 import LabResults from './pages/lab_results/LabResults'
 import Billing from './pages/billing/Billing'
 import Layout from './components/Layout'
+import PatientDetail from './pages/patients/PatientDetail'
+import DoctorDetail from './pages/doctors/DoctorDetail'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -36,6 +38,8 @@ export default function App() {
           <Route path="prescriptions" element={<Prescriptions />} />
           <Route path="lab-results" element={<LabResults />} />
           <Route path="billing" element={<Billing />} />
+          <Route path="patients/:id" element={<PatientDetail />} />
+          <Route path="doctors/:id" element={<DoctorDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
