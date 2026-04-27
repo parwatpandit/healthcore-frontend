@@ -11,6 +11,7 @@ import Billing from './pages/billing/Billing'
 import Layout from './components/Layout'
 import PatientDetail from './pages/patients/PatientDetail'
 import DoctorDetail from './pages/doctors/DoctorDetail'
+import MLPredictor from './pages/ml/MLPredictor'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="billing" element={<Billing />} />
           <Route path="patients/:id" element={<PatientDetail />} />
           <Route path="doctors/:id" element={<DoctorDetail />} />
+          <Route path="ml" element={<MLPredictor />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,14 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import {
-  LayoutDashboard,
-  Users,
-  Stethoscope,
-  CalendarCheck,
-  Pill,
-  FlaskConical,
-  FileText,
-  LogOut,
+  LayoutDashboard, Users, Stethoscope, CalendarCheck,
+  Pill, FlaskConical, FileText, Brain, LogOut,
 } from 'lucide-react'
 
 const links = [
@@ -19,6 +13,7 @@ const links = [
   { to: '/prescriptions', label: 'Prescriptions', icon: Pill },
   { to: '/lab-results', label: 'Lab Results', icon: FlaskConical },
   { to: '/billing', label: 'Billing', icon: FileText },
+  { to: '/ml', label: 'Disease Predictor', icon: Brain },
 ]
 
 export default function Sidebar() {
